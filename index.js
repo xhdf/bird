@@ -9,6 +9,9 @@ new Load({
 }).run()
 
 function start() {
+    var score=document.getElementById("score");
+    var gamescore=0
+    var replay=document.getElementById("replay");
     var c = document.getElementById("canvas");
     c.width = 288
     c.height = 512
@@ -18,51 +21,9 @@ function start() {
         x: 0,
         y: 0,
         img: createImg('img/bg_day.png'),
-        update: function () {
-
-
+        update:function(){
         }
     }
-    
-    // var bird=new sprite(30,280,0,createImg('img/bird0_0.png'))
-    // bird.g=0.2
-    // bird.imgIndex=0
-    // bird.interval=1
-    // bird.jcpz=function(){
-    //     var asd = isCollsionWithRect(bird, pipe_down)
-    //     var asd1 = isCollsionWithRect(bird, pipe_down1)
-    //     var asds1 = isCollsionWithRect(bird, pipe_up1)
-    //     var asds = isCollsionWithRect(bird, pipe_up)
-    //     if (asd || asds || asd1 || asds1) {
-    //         bird.v = 50
-    //     }
-    // }
-    // bird.scb=function(){
-    //     bird.interval++
-    //     if (bird.interval === 10) {
-    //         bird.interval = 0
-    //         if (bird.imgIndex === 0) {
-    //             bird.img = createImg('img/bird0_1.png')
-    //             bird.imgIndex = 1
-    //         } else if (bird.imgIndex === 1) {
-    //             bird.img = createImg('img/bird0_2.png')
-    //             bird.imgIndex = 2
-    //         } else if (bird.imgIndex === 2) {
-    //             bird.img = createImg('img/bird0_0.png')
-    //             bird.imgIndex = 0
-    //         }
-    //     }
-    // }
-    // bird.xl= function () {
-    //     bird.v = bird.v + bird.g
-    //     bird.y = bird.y + bird.v
-    // }
-    // bird.update=function () {
-    //     this.xl()
-    //     this.jcpz()
-    //     this.scb()
-    // }
-
     var bird = {
         x: 30,
         y: 280,
@@ -78,6 +39,11 @@ function start() {
             var asds = isCollsionWithRect(bird, pipe_up)
             if (asd || asds || asd1 || asds1) {
                 bird.v = 50
+                setTimeout(function(){
+                    game.stop()
+                    replay.style.display="block"
+                    replayGame()
+                },500)
             }
         },
         scb: function () {
@@ -95,7 +61,6 @@ function start() {
                         this.imgIndex = 0
                     }
                 }
-
         },
         xl: function () {
             this.v = this.v + this.g
@@ -108,24 +73,28 @@ function start() {
         }
     }
 
-    function sprite(x,y,v,img){
+    function sprite(x,y,v,img,state){
         this.x=x
         this.y=y
         this.v=v
         this.img=img
-     
+        this.state=state
     }
     sprite.prototype.update=function () {
         this.x -= 1
         if (this.x == -52) {
             this.x = 300
-            this.y = rand()
+            gamescore++
+            score.innerHTML=gamescore
+            if(this.state==0){
+                this.y = rand()
+            }
         }
     }
-    var pipe_down=new sprite(100,rand(),0, createImg('img/pipe_down.png'))
-    var pipe_down1=new sprite(300,rand(),0, createImg('img/pipe_down.png'))
-    var pipe_up1=new sprite(400,rand1(),0, createImg('img/pipe_up.png'))
-    var pipe_up=new sprite(200,rand1(),0, createImg('img/pipe_up.png'))
+    var pipe_down=new sprite(100,rand(),0, createImg('img/pipe_down.png'),0)
+    var pipe_down1=new sprite(300,rand(),0, createImg('img/pipe_down.png'),0)
+    var pipe_up1=new sprite(400,rand1(),0, createImg('img/pipe_up.png'),1)
+    var pipe_up=new sprite(200,rand1(),0, createImg('img/pipe_up.png'),1)
     
     function rand() {
         var a = -200 + parseInt(100 * Math.random())
@@ -146,8 +115,12 @@ function start() {
         },
         update: function () {
             for (var i = 0; i < this.sprites.length; i++) {
+                console.log(this.sprites.length)
                 this.sprites[i].update()
             }
+        },
+        stop:function(){
+            clearInterval(interval);
         }
     }
     game.sprites.push(bg)
@@ -156,8 +129,6 @@ function start() {
     game.sprites.push(pipe_up)
     game.sprites.push(pipe_down1)
     game.sprites.push(pipe_up1)
-
-
 
     document.onclick = function () {
         bird.v = -5
@@ -169,26 +140,36 @@ function start() {
         return img
     }
 
-    setInterval(
+    var begin=false
+    var interval =setInterval(
         function () {
-            update()
+            c.onclick=function(){
+                begin=true
+            }
+            if(begin){
+                update()
+            }
             draw(ctx)
         }, 1000 / 60
     )
 
-
     function update() {
         game.update()
     }
-
 
     function draw(ctx) {
         ctx.clearRect(0, 0, 288, 512)
         game.draw()
     }
 
+    function replayGame(){
+        replay.onclick=function(){
+            score.innerHTML=0
+            start()
+            replay.style.display="none"
+        }
+    }
 }
-
 
 function isCollsionWithRect(obj1, obj2) {
     var x1 = obj1.x
