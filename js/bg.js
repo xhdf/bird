@@ -7,6 +7,7 @@ class Bg{
     update(){
     }
 }
+
 // var Bg = function () {
 //     var bgg = {
 //         x: 0,
