@@ -1,5 +1,5 @@
 var log = console.log.bind(console)
-var imageFromPath = function imageFromPath(src) {
+function imageFromPath(src) {
     var img = new Image()
     img.src = src
     return img
@@ -31,9 +31,5 @@ function isCollsionWithRect(obj1, obj2) {
 }
 function rand() {
     var a = -250 + parseInt(100 * Math.random())
-    return a
-}
-function rand1() {
-    var a = 210 + parseInt(100 * Math.random())
     return a
 }

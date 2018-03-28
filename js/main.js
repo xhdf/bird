@@ -15,8 +15,8 @@ function start() {
     var bird = new Bird()
     var pipe_down = new Pipes(100, rand(), imageFromPath('img/pipe_down.png'), 0)
     var pipe_down1 = new Pipes(300, rand(), imageFromPath('img/pipe_down.png'), 0)
-    var pipe_up1 = new Pipes(100, rand1(), imageFromPath('img/pipe_up.png'), 1)
-    var pipe_up = new Pipes(300, rand1(),  imageFromPath('img/pipe_up.png'), 1)
+    var pipe_up1 = new Pipes(100, rand()+500, imageFromPath('img/pipe_up.png'), 1)
+    var pipe_up = new Pipes(300, rand()+500,  imageFromPath('img/pipe_up.png'), 1)
     var sprite = [bg, pipe_down, pipe_down1,bird,pipe_up1, pipe_up,land]
     var game = new Game(sprite)
     document.onclick = function () {

@@ -7,14 +7,3 @@ class Bg{
     update(){
     }
 }
-
-// var Bg = function () {
-//     var bgg = {
-//         x: 0,
-//         y: 0,
-//         img: imageFromPath('img/bg_day.png'),
-//         update: function () {
-//         }
-//     }
-//     return bgg
-// }

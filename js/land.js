@@ -16,22 +16,3 @@ class Land{
         this.move()
     }
 }
-// var Land = function () {
-//     var landd = {
-//         x: 0,
-//         y: 452,
-//         v: 5,
-//         interval: 0,
-//         img: imageFromPath('img/land.png'),
-//         move: function () {
-//             this.x -= 5
-//             if (this.x < -276) {
-//                 this.x = 0
-//             }
-//         },
-//         update: function () {
-//             this.move()
-//         }
-//     }
-//     return landd
-// }
