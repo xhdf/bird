@@ -45,8 +45,6 @@ class Bird{
     }
     update() {
         this.xl()
-        this.jcpz()
         this.scb()
-        // this.rotate()
     }
 }

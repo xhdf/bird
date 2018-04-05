@@ -1,56 +1,60 @@
-class Game{
-    constructor(sprite){
-        this.sprites=sprite
-        this.c = document.getElementById("canvas")
-        this.c.width = 288
-        this.c.height = 512
-        window.ctx = this.c.getContext("2d")
-        this.score = document.querySelector(".score")
-        this.replay = document.querySelector(".replay")
-        this.beginplay = document.querySelector(".beginplay")
+class Game {
+    constructor(sprite) {
+        this.sprites = sprite
         this.begin = false
-        var _this=this
+        var _this = this
         this.interval = setInterval(
             function () {
-                _this.beginplay.onclick = function () {
+                window.onclick = function () {
                     _this.begin = true
-                    _this.beginplay.style.display = "none"
                 }
+                ctx.clearRect(0, 0, c.width, c.width)
+                _this.draw()
                 if (_this.begin) {
                     _this.update()
+                } else {
+                    _this.beginGame()
                 }
-                ctx.clearRect(0, 0, 288, 512)
-                _this.draw()
             }, 1000 / 60
         )
     }
-    draw() {  
-        for (var i = 0; i < this.sprites.length; i++) {
+    beginGame() {
+        ctx.drawImage(this.sprites[7].img, this.sprites[7].x, this.sprites[7].y)
+    }
+    draw() {
+        for (var i = 0; i < this.sprites.length - 2; i++) {
             ctx.drawImage(this.sprites[i].img, this.sprites[i].x, this.sprites[i].y)
+            ctx.fillText(score, 10, 50);
         }
     }
     update() {
         for (var i = 0; i < this.sprites.length; i++) {
             this.sprites[i].update()
         }
+        this.collide()
+    }
+    collide() {
+        for (let i = 2; i < this.sprites.length - 2; i++) {
+            var colllision = isCollsionWithRect(this.sprites[1], this.sprites[i])
+            if (colllision) {
+                this.sprites[1].v = 50
+                this.gameout()
+            }
+        }
     }
     stop() {
         clearInterval(this.interval);
+        ctx.drawImage(this.sprites[8].img, this.sprites[8].x, this.sprites[8].y)
     }
     replayGame() {
-        var _this=this
-        _this.replay.onclick = function () {
-            _this.score.innerHTML = 0
+        window.onclick = function () {
             start()
-            _this.replay.style.display = "none"
-            _this.beginplay.style.display = "block"
         }
     }
     gameout() {
         setTimeout(function () {
             this.stop()
-            this.replay.style.display = "block"
             this.replayGame()
-        }.call(this), 1500)
+        }.bind(this), 1000)
     }
 }

@@ -1,8 +1,0 @@
-class SPrite{
-    constructor(){
-
-    }
-    update(){
-        
-    }
-}
